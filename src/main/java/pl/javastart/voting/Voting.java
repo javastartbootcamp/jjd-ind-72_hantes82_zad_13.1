@@ -1,8 +1,6 @@
 package pl.javastart.voting;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Voting {
 
@@ -26,9 +24,40 @@ public class Voting {
      * do wczytywania danych od użytkownika użyj scannera z parametru
      * Metoda powinna pobrać głos dla każdego przekazanego głosującego i zapisać wyniki głosowania do VotingResult
      */
-    VotingResult executeVoting(List<String> voters, Scanner scanner) {
 
-        return null; // to możesz (a nawet powinieneś/powinnaś) zmienić :)
+    VotingResult executeVoting(List<String> voters, Scanner scanner) {
+        List<Vote> voted = new ArrayList<>(voters.size());
+        int counter = 0;
+        double voteFor = 0;
+        double voteAgainst = 0;
+        double voteHold = 0;
+        while (counter < voters.size()) {
+            System.out.println("Jak głosuje " + voters.get(counter) + "? (z - za, p - przeciw, w - wstrzymanie się)");
+            String result = scanner.nextLine();
+
+            switch (result) {
+                case "z":
+                    voted.add(new Vote(voters.get(counter), true));
+                    voteFor++;
+                    counter++;
+                    break;
+                case "p":
+                    voted.add(new Vote(voters.get(counter), false));
+                    voteAgainst++;
+                    counter++;
+                    break;
+                case "w":
+                    voted.add(new Vote(voters.get(counter), null));
+                    voteHold++;
+                    counter++;
+                    break;
+                default:
+                    System.out.println("Podano niewlasciwa wartosc");
+                    result = scanner.nextLine();
+                    break;
+            }
+        }
+        return new VotingResult(voteFor, voteAgainst, voteHold, voted); // to możesz (a nawet powinieneś/powinnaś) zmienić :)
     }
 
 }
